@@ -1,0 +1,32 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# score capping
+# borrowed from Cryptid (specifically https://github.com/MathIsFun0/Cryptid/blob/2a416baf61d63c48babc1ad581cf9df3e4f6dea2/lovely/blind.toml#L6C1-L21C20 )
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)"
+position = "at"
+payload = "func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = math.min(math.max(math.floor(hand_chips*mult), G.GAME.blind.chips*rcBLib.vars.scoreCaps.min), G.GAME.blind.chips*rcBLib.vars.scoreCaps.max), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "ease_to = G.GAME.chips + math.floor(hand_chips*mult),"
+position = "at"
+payload = "ease_to = G.GAME.chips + math.min(math.max(math.floor(hand_chips*mult), G.GAME.blind.chips*rcBLib.vars.scoreCaps.min), G.GAME.blind.chips*rcBLib.vars.scoreCaps.max),"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''trigger = 'immediate',
+      func = (function() G.GAME.current_round.current_hand.handname = '';return true end)
+    }))'''
+position = "after"
+payload = "rcBLib.vars.scoreCaps = {min = 0, max = 1}"
+match_indent = true

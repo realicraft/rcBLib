@@ -1,0 +1,17 @@
+{
+    "id": "rcblib",
+    "name": "rcBLib",
+    "author": ["realicraft"],
+	"description": "A library for my Balatro mods.",
+	"prefix": "rcbl",
+	"main_file": "main.lua",
+	"priority": 120,
+	"badge_colour": "7f7f00",
+	"badge_text_colour": "FFFFFF",
+	"display_name": "rcBLib",
+	"version": "1.0.0",
+	"dependencies": [
+		"Steamodded (>=1.0.0~BETA-0308a)",
+		"Lovely (>=0.6)"
+	]
+}
