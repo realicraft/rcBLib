@@ -1,6 +1,6 @@
 rcBLib = SMODS.current_mod
 rcBLib.vars = {
-    scoreCaps = {min = 0, max = 1}
+    scoreCaps = {min = -1e308, max = 1e308}
 }
 
 function rcBLib:blind_active()
@@ -44,15 +44,36 @@ end
 --- @param min number|nil?
 --- @param max number|nil?
 --- @param force boolean?
---- `min` and `max` range from 0 to 1<br>
 --- `min` and `max` can be `nil` to represent no change
 function rcBLib:cap_score(min, max, force)
     if (min) and ((min > rcBLib.vars.scoreCaps.min) or (force)) then
-        rcBLib.vars.scoreCaps.min = math.max(0,min)
+        rcBLib.vars.scoreCaps.min = min
     end
     if (max) and ((max < rcBLib.vars.scoreCaps.max) or (force)) then
-        rcBLib.vars.scoreCaps.max = math.min(max,1)
+        rcBLib.vars.scoreCaps.max = max
     end
+end
+
+rcBLib.SuitPairs = {
+    Hearts = "Diamonds",
+    Diamonds = "Hearts",
+    Spades = "Clubs",
+    Clubs = "Spades",
+}
+
+--- @param suit1 string
+--- @param suit2 string
+--- only needs to be called once per pair
+function rcBLib.SuitPairs:add_pair(suit1, suit2)
+    self[suit1] = suit2
+    self[suit2] = suit1
+end
+
+rcBLib.NegativeEnhancements = {} -- no vanilla negative enhancements
+
+--- @param enhance string
+function rcBLib.NegativeEnhancements:add_enhance(enhance)
+    table.insert(self, enhance)
 end
 
 -- COMPAT --

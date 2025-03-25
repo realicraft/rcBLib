@@ -28,5 +28,5 @@ pattern = '''trigger = 'immediate',
       func = (function() G.GAME.current_round.current_hand.handname = '';return true end)
     }))'''
 position = "after"
-payload = "rcBLib.vars.scoreCaps = {min = 0, max = 1}"
+payload = "rcBLib.vars.scoreCaps = {min = -1e308, max = 1e308}"
 match_indent = true
